@@ -40,7 +40,7 @@ var faceapi = require("face-api.js");
 var commons_1 = require("./commons");
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var img, results;
+        var img, results, personExpression;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, commons_1.faceDetectionNet.loadFromDisk('weights')];
@@ -52,20 +52,20 @@ function run() {
                     return [4 /*yield*/, faceapi.nets.faceExpressionNet.loadFromDisk('weights')];
                 case 3:
                     _a.sent();
-                    return [4 /*yield*/, commons_1.canvas.loadImage('tempCamera/happy1.jpeg')];
+                    return [4 /*yield*/, commons_1.canvas.loadImage('tempCamera/toDetectExpression.jpeg')];
                 case 4:
                     img = _a.sent();
                     return [4 /*yield*/, faceapi.detectAllFaces(img, commons_1.faceDetectionOptions)
                             .withFaceExpressions()];
                 case 5:
                     results = _a.sent();
+                    personExpression = '';
                     Object.keys(results[0].expressions).forEach(function (expression) {
-                        console.log(expression, results[0].expressions[expression]);
-                        if (results[0].expressions[expression] > 0.5 && results[0].expressions[expression] <= 1) {
-                            console.log('This person is ' + expression);
+                        if (results[0].expressions[expression] > 0.7 && results[0].expressions[expression] <= 1) {
+                            personExpression = expression;
                         }
                     });
-                    return [2 /*return*/];
+                    return [2 /*return*/, personExpression];
             }
         });
     });
